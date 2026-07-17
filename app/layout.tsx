@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -45,10 +46,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${bodyFont.variable} ${dataFont.variable}`}>
-      <head>
-        {/* Adobe Fonts (Typekit) — "clother" heading typeface */}
-        <link rel="stylesheet" href="https://use.typekit.net/otj5vse.css" />
-      </head>
+    <head>
+  {/* Adobe Fonts (Typekit) — "clother" heading typeface */}
+  <link rel="stylesheet" href="https://use.typekit.net/otj5vse.css" />
+
+  {/* Google tag (gtag.js) */}
+  <Script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-D6H6PW3S03"
+    strategy="afterInteractive"
+  />
+  <Script id="google-analytics" strategy="afterInteractive">
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-D6H6PW3S03');
+    `}
+  </Script>
+</head>
       <body className="bg-obsidian text-silver antialiased">
         <Header />
         <main className="min-h-screen">{children}</main>
