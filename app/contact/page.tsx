@@ -24,7 +24,7 @@ export default function ContactPage() {
         <div className="mt-10 rounded-lg border border-steel/20 bg-carbon p-8">
           <p className="font-mono text-xs tracking-wider text-steel">EMAIL</p>
           <a
-            href="mailto:hello@aerazoaz.com"
+            href="mailto:desk@aerazoaz.com"
             className="mt-2 block text-lg font-semibold text-orange hover:underline"
           >
             desk@aerazoaz.com
