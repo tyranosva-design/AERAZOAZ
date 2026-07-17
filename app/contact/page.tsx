@@ -27,7 +27,7 @@ export default function ContactPage() {
             href="mailto:hello@aerazoaz.com"
             className="mt-2 block text-lg font-semibold text-orange hover:underline"
           >
-            hello@aerazoaz.com
+            desk@aerazoaz.com
           </a>
         </div>
 
