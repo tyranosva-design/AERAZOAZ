@@ -1,5 +1,20 @@
 import Link from "next/link";
 import { CATEGORY_LIST } from "@/lib/site";
+import {
+  InstagramIcon,
+  FacebookIcon,
+  XIcon,
+  YouTubeIcon,
+  LinkedInIcon,
+} from "@/components/icons";
+
+const SOCIAL_LINKS = [
+  { href: "https://www.instagram.com/aerazoaz/", label: "Instagram", Icon: InstagramIcon },
+  { href: "https://www.facebook.com/AERAZOAZ", label: "Facebook", Icon: FacebookIcon },
+  { href: "https://x.com/aerazoaz", label: "X (Twitter)", Icon: XIcon },
+  { href: "https://www.youtube.com/@AERAZOAZ", label: "YouTube", Icon: YouTubeIcon },
+  { href: "https://www.linkedin.com/company/aerazoaz/", label: "LinkedIn", Icon: LinkedInIcon },
+];
 
 const POLICY_LINKS = [
   { href: "/privacy-policy", label: "Privacy Policy" },
@@ -24,6 +39,20 @@ export default function Footer() {
               Research platform. Zero hype. Verifiable statistics, platform
               API data, and objective analysis only.
             </p>
+            <div className="mt-6 flex items-center gap-4">
+              {SOCIAL_LINKS.map(({ href, label, Icon }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="text-steel transition-colors hover:text-orange"
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
+            </div>
           </div>
 
           <div>

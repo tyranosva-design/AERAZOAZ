@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bodyFont.variable} ${dataFont.variable}`}>
       {/* Adobe Fonts (Typekit) — "clother" heading typeface */}
-      <link rel="stylesheet" href="https://use.typekit.net/otj5vse.css" />
+      <link rel="stylesheet" href="https://use.typekit.net/otj5vse.css" precedence="default" />
 
       {/* Google tag (gtag.js) */}
       <Script
