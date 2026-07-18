@@ -201,7 +201,7 @@ export async function getAllPostsForSitemap(): Promise<
           pageInfo: { hasNextPage: boolean; endCursor: string | null };
           nodes: RawPostNode[];
         };
-      } = await wpFetch(query, { after }, 3600);
+      } = await wpFetch(query, { after }, { revalidate: 3600 });
 
       for (const node of data.posts.nodes) {
         results.push({
