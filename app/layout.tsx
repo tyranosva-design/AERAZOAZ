@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
+import CookieConsent from "@/components/CookieConsent";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 
 const bodyFont = Inter({
@@ -68,6 +69,7 @@ export default function RootLayout({
         <main className="min-h-screen">{children}</main>
         <Newsletter />
         <Footer />
+        <CookieConsent />
       </body>
     </html>
   );

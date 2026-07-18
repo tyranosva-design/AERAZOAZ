@@ -6,7 +6,7 @@
   --color-carbon: #16181c;     /* Crude Carbon — card backgrounds */
   --color-silver: #e2e8f0;     /* Anodized Silver — primary text */
   --color-steel: #64748b;      /* Weathered Steel — borders / metadata */
-  --color-orange: #ff5a36;     /* Digital Safety Orange — accent / CTAs */
+  --color-orange: #ff3d00;     /* Digital Safety Orange — accent */
 
   --background: var(--color-obsidian);
   --foreground: var(--color-silver);

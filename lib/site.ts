@@ -58,7 +58,7 @@ export const CATEGORIES: Record<CategoryKey, CategoryConfig> = {
     label: "NEWS",
     description:
       "Daily punchy briefs on platform policy, algorithm shifts, and payment changes — Fact, Mechanism, Wallet Impact.",
-    hasTags: false,
+    hasTags: true,
   },
 };
 
