@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeftIcon } from "@/components/icons";
@@ -105,6 +106,19 @@ export default async function PostPage({
             })
             .toUpperCase()}
         </time>
+
+        {post.featuredImage && (
+          <div className="relative mt-8 w-full aspect-video overflow-hidden rounded-sm">
+            <Image
+              src={post.featuredImage.sourceUrl}
+              alt={post.featuredImage.altText || post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 672px"
+              priority
+            />
+          </div>
+        )}
 
         <div
           className="wp-content mt-10 border-t border-steel/20 pt-10"
