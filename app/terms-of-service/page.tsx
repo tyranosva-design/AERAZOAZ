@@ -13,7 +13,7 @@ export default function TermsPage() {
         <p className="font-mono text-xs tracking-[0.2em] text-orange">
           LEGAL
         </p>
-        <h1 className="font-heading mt-4 text-3xl font-bold text-silver md:text-4xl">
+        <h1 className="font-heading mt-4 text-3xl font-bold text-foreground md:text-4xl">
           Terms of Service
         </h1>
         <p className="mt-2 font-mono text-xs text-steel">

@@ -73,14 +73,14 @@ export default async function PostPage({
       <div className="mx-auto max-w-3xl">
         <Link
           href={`/${config.path}`}
-          className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.15em] text-steel transition-colors hover:text-orange"
+          className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.15em] text-steel transition-colors hover:text-accent"
         >
           <ArrowLeftIcon size={14} />
           BACK TO {config.label}
         </Link>
 
         <div className="mt-8 flex flex-wrap items-center gap-3 font-mono text-xs tracking-wider text-steel">
-          <span className="text-orange">{config.label}</span>
+          <span className="text-accent">{config.label}</span>
           {config.hasTags &&
             post.tags.slice(0, 2).map((tag) => (
               <span key={tag.slug}>
@@ -90,7 +90,7 @@ export default async function PostPage({
             ))}
         </div>
 
-        <h1 className="font-heading mt-4 text-3xl font-bold leading-tight tracking-tight text-silver md:text-4xl">
+        <h1 className="font-heading mt-4 text-3xl font-bold leading-tight tracking-tight text-foreground md:text-4xl">
           {post.title}
         </h1>
 
@@ -121,16 +121,16 @@ export default async function PostPage({
         )}
 
         <div
-          className="wp-content mt-10 border-t border-steel/20 pt-10"
+          className="wp-content mt-10 border-t border-border pt-10"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        <div className="mt-16 border-t border-steel/20 pt-8">
+        <div className="mt-16 border-t border-border pt-8">
           <p className="text-sm text-steel">
             Published by AERAZOAZ Research Division. All data is sourced from
             verified APIs and public datasets — methodology available on
             request via our{" "}
-            <Link href="/contact" className="text-orange underline">
+            <Link href="/contact" className="text-foreground underline underline-offset-2 decoration-foreground/30 transition-colors hover:text-accent hover:decoration-accent">
               contact page
             </Link>
             .

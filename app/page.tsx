@@ -16,12 +16,12 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-steel/20 px-6 pt-24 pb-20 md:px-10 md:pt-32 md:pb-28">
+      <section className="border-b border-border px-6 pt-24 pb-20 md:px-10 md:pt-32 md:pb-28">
         <div className="mx-auto max-w-5xl">
           <p className="font-mono text-xs tracking-[0.2em] text-orange">
             THE INSIGHT TO ACTION ENGINE
           </p>
-          <h1 className="font-heading mt-6 max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight text-silver md:text-6xl">
+          <h1 className="font-heading mt-6 max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight text-foreground md:text-6xl">
             Cold, verifiable data for entrepreneurs building a global business.
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-steel md:text-lg">
@@ -36,7 +36,7 @@ export default async function HomePage() {
                 <Link
                   key={cat.key}
                   href={`/${cat.path}`}
-                  className="rounded-full border border-steel/30 px-6 py-3 font-mono text-xs tracking-[0.15em] text-silver transition-colors hover:border-orange hover:text-orange"
+                  className="rounded-full border border-obsidian bg-transparent px-6 py-3 font-mono text-xs tracking-[0.15em] text-obsidian transition-colors hover:bg-obsidian hover:text-white"
                 >
                   {cat.label}
                 </Link>
@@ -53,7 +53,7 @@ export default async function HomePage() {
       ].map(({ config, posts }) => (
         <section
           key={config.key}
-          className="border-b border-steel/20 px-6 py-16 md:px-10 md:py-20"
+          className="border-b border-border px-6 py-16 md:px-10 md:py-20"
         >
           <div className="mx-auto max-w-7xl">
             <div className="flex items-end justify-between gap-4">
@@ -67,7 +67,7 @@ export default async function HomePage() {
               </div>
               <Link
                 href={`/${config.path}`}
-                className="whitespace-nowrap font-mono text-xs tracking-[0.15em] text-silver transition-colors hover:text-orange"
+                className="whitespace-nowrap font-mono text-xs tracking-[0.15em] text-foreground transition-colors hover:text-orange"
               >
                 VIEW ALL →
               </Link>
@@ -107,19 +107,19 @@ export default async function HomePage() {
             </div>
             <Link
               href="/news"
-              className="whitespace-nowrap font-mono text-xs tracking-[0.15em] text-silver transition-colors hover:text-orange"
+              className="whitespace-nowrap font-mono text-xs tracking-[0.15em] text-foreground transition-colors hover:text-orange"
             >
               VIEW ALL →
             </Link>
           </div>
 
           {news.length > 0 ? (
-            <div className="mt-8 divide-y divide-steel/20 border-t border-b border-steel/20">
+            <div className="mt-8 divide-y divide-border border-t border-b border-border">
               {news.map((item) => (
                 <Link
                   key={item.slug}
                   href={`/news/${item.slug}`}
-                  className="group flex flex-col gap-2 py-6 transition-colors hover:bg-carbon md:flex-row md:items-center md:gap-6 md:px-4"
+                  className="group flex flex-col gap-2 py-6 transition-colors hover:bg-soft-panel md:flex-row md:items-center md:gap-6 md:px-4"
                 >
                   <time
                     dateTime={item.date}
@@ -133,7 +133,7 @@ export default async function HomePage() {
                       })
                       .toUpperCase()}
                   </time>
-                  <h3 className="font-heading font-semibold text-silver transition-colors group-hover:text-orange">
+                  <h3 className="font-heading font-semibold text-foreground transition-colors group-hover:text-orange">
                     {item.title}
                   </h3>
                 </Link>

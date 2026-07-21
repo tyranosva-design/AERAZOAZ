@@ -10,10 +10,10 @@ export default function ContactPage() {
   return (
     <section className="px-6 py-20 md:px-10">
       <div className="mx-auto max-w-2xl">
-        <p className="font-mono text-xs tracking-[0.2em] text-orange">
+        <p className="font-mono text-xs tracking-[0.2em] text-accent">
           CONTACT
         </p>
-        <h1 className="font-heading mt-4 text-3xl font-bold text-silver md:text-4xl">
+        <h1 className="font-heading mt-4 text-3xl font-bold text-foreground md:text-4xl">
           Talk to the research team.
         </h1>
         <p className="mt-6 text-base leading-relaxed text-steel">
@@ -21,11 +21,11 @@ export default function ContactPage() {
           corrections, reach us directly.
         </p>
 
-        <div className="mt-10 rounded-lg border border-steel/20 bg-carbon p-8">
+        <div className="mt-10 rounded-lg border border-border bg-surface p-8">
           <p className="font-mono text-xs tracking-wider text-steel">EMAIL</p>
           <a
             href="mailto:desk@aerazoaz.com"
-            className="mt-2 block text-lg font-semibold text-orange hover:underline"
+            className="mt-2 block text-lg font-semibold text-accent hover:text-accent-hover"
           >
             desk@aerazoaz.com
           </a>

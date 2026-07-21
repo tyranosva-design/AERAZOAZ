@@ -30,14 +30,14 @@ export default function Newsletter() {
   return (
     <section
       id="newsletter"
-      className="border-t border-steel/20 bg-carbon px-6 py-16 md:px-10 md:py-20"
+      className="border-t border-border bg-surface px-6 py-16 md:px-10 md:py-20"
     >
       <div className="mx-auto flex max-w-7xl flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
         <div className="max-w-lg">
           <p className="font-mono text-xs tracking-[0.2em] text-orange">
             STAY UPDATED
           </p>
-          <h2 className="font-heading mt-3 text-2xl font-bold text-silver md:text-3xl">
+          <h2 className="font-heading mt-3 text-2xl font-bold text-foreground md:text-3xl">
             Get new Reports, Guides, Tools, and daily News Flashes in your
             inbox.
           </h2>
@@ -61,12 +61,12 @@ export default function Newsletter() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@company.com"
-            className="w-full rounded-full border border-steel/30 bg-obsidian px-5 py-3 text-sm text-silver placeholder:text-steel focus:border-orange focus:outline-none"
+            className="search-input w-full"
           />
           <button
             type="submit"
             disabled={status === "loading"}
-            className="shrink-0 rounded-full bg-orange px-6 py-3 font-mono text-xs tracking-[0.15em] text-obsidian transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="btn-primary shrink-0 rounded-full px-6 py-3"
           >
             {status === "loading" ? "SUBSCRIBING…" : "SUBSCRIBE"}
           </button>
@@ -74,12 +74,12 @@ export default function Newsletter() {
       </div>
 
       {status === "success" && (
-        <p className="mx-auto mt-4 max-w-7xl text-sm text-orange">
+        <p className="mx-auto mt-4 max-w-7xl text-sm text-success">
           You&rsquo;re subscribed. Watch your inbox.
         </p>
       )}
       {status === "error" && (
-        <p className="mx-auto mt-4 max-w-7xl text-sm text-red-400">
+        <p className="mx-auto mt-4 max-w-7xl text-sm text-error">
           Something went wrong — please try again in a moment.
         </p>
       )}

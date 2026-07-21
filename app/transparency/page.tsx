@@ -13,8 +13,8 @@ export default function TransparencyPage() {
         <p className="font-mono text-xs tracking-[0.2em] text-orange">
           LEGAL
         </p>
-        <h1 className="font-heading mt-4 text-3xl font-bold text-silver md:text-4xl">
-          Transparency &amp; Affiliate Policy
+        <h1 className="font-heading mt-4 text-3xl font-bold text-foreground md:text-4xl">
+          Transparency & Affiliate Policy
         </h1>
         <p className="mt-2 font-mono text-xs text-steel">
           Last updated: July 2026

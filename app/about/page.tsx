@@ -13,10 +13,10 @@ export default function AboutPage() {
   return (
     <section className="px-6 py-20 md:px-10">
       <div className="mx-auto max-w-3xl">
-        <p className="font-mono text-xs tracking-[0.2em] text-orange">
+        <p className="font-mono text-xs tracking-[0.2em] text-accent">
           ABOUT AERAZOAZ
         </p>
-        <h1 className="font-heading mt-4 text-3xl font-bold text-silver md:text-4xl">
+        <h1 className="font-heading mt-4 text-3xl font-bold text-foreground md:text-4xl">
           A digital economic journal, not another guru blog.
         </h1>
 

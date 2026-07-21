@@ -24,7 +24,7 @@ export default function PostCard({
   return (
     <Link
       href={`/${category.path}/${post.slug}`}
-      className="group flex flex-col rounded-lg border border-steel/20 bg-carbon p-6 transition-colors hover:border-orange/50"
+      className="group flex flex-col rounded-lg border border-border bg-surface p-6 transition-all hover:border-support hover:shadow-[0_10px_30px_rgba(12,50,74,0.08)]"
     >
       <div className="flex items-center gap-3 font-mono text-[0.7rem] tracking-wider text-steel">
         <time dateTime={post.date}>{formatDate(post.date)}</time>
@@ -38,7 +38,7 @@ export default function PostCard({
         )}
       </div>
 
-      <h3 className="font-heading mt-4 text-lg font-bold leading-snug text-silver transition-colors group-hover:text-orange">
+      <h3 className="font-heading mt-4 text-lg font-bold leading-snug text-foreground transition-colors group-hover:text-orange">
         {post.title}
       </h3>
 

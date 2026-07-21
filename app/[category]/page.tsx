@@ -43,10 +43,10 @@ export default async function CategoryPage({
   return (
     <section className="px-6 py-20 md:px-10">
       <div className="mx-auto max-w-7xl">
-        <p className="font-mono text-xs tracking-[0.2em] text-orange">
+        <p className="font-mono text-xs tracking-[0.2em] text-accent">
           {config.label}
         </p>
-        <h1 className="font-heading mt-4 max-w-2xl text-3xl font-bold text-silver md:text-4xl">
+        <h1 className="font-heading mt-4 max-w-2xl text-3xl font-bold text-foreground md:text-4xl">
           {config.description}
         </h1>
 

@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
-
-const bodyFont = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
 
 const dataFont = JetBrains_Mono({
   subsets: ["latin"],
@@ -46,9 +40,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bodyFont.variable} ${dataFont.variable}`}>
-      {/* Adobe Fonts (Typekit) — "clother" heading typeface */}
-      <link rel="stylesheet" href="https://use.typekit.net/otj5vse.css" precedence="default" />
+    <html lang="en" className={`${dataFont.variable}`}>
+      {/* Adobe Fonts (Typekit) — Proxima Nova (headings), Acumin Pro (body) */}
+      <link rel="stylesheet" href="https://use.typekit.net/gpe4qia.css" precedence="default" />
 
       {/* Google tag (gtag.js) */}
       <Script
@@ -64,7 +58,7 @@ export default function RootLayout({
           gtag('config', 'G-D6H6PW3S03');
         `}
       </Script>
-      <body className="bg-obsidian text-silver antialiased">
+      <body className="bg-background text-foreground antialiased">
         <Header />
         <main className="min-h-screen">{children}</main>
         <Newsletter />

@@ -28,8 +28,8 @@ function NavLink({
       onClick={onClick}
       className={`relative pb-1 font-mono text-xs tracking-[0.15em] transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-orange after:transition-all after:duration-300 after:content-[''] ${
         active
-          ? "text-silver after:w-full"
-          : "text-steel after:w-0 hover:text-silver hover:after:w-full"
+          ? "text-white after:w-full"
+          : "text-white/60 after:w-0 hover:text-white hover:after:w-full"
       }`}
     >
       {label}
@@ -45,11 +45,11 @@ export default function Header() {
     href === "/about" ? pathname === href : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-steel/20 bg-obsidian/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-anchor/95 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-10">
         <Link
           href="/"
-          className="font-heading text-xl font-bold tracking-tight text-silver"
+          className="font-heading text-xl font-bold tracking-tight text-white"
           onClick={() => setOpen(false)}
         >
           AERAZOAZ
@@ -70,7 +70,7 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <a
             href="#newsletter"
-            className="hidden rounded-full border border-orange/50 px-5 py-2 font-mono text-xs tracking-[0.15em] text-orange transition-colors hover:bg-orange hover:text-obsidian md:inline-block"
+            className="hidden rounded-full bg-accent px-5 py-2 font-mono text-xs tracking-[0.15em] text-white transition-colors hover:bg-accent-hover md:inline-block"
             onClick={() => setOpen(false)}
           >
             SUBSCRIBE
@@ -82,7 +82,7 @@ export default function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="inline-flex items-center justify-center rounded-full border border-steel/30 p-2 text-silver md:hidden"
+            className="inline-flex items-center justify-center rounded-full border border-white/20 p-2 text-white md:hidden"
           >
             {open ? <CloseIcon size={20} /> : <MenuIcon size={20} />}
           </button>
@@ -91,7 +91,7 @@ export default function Header() {
 
       {/* Mobile nav panel */}
       {open && (
-        <nav className="border-t border-steel/20 bg-obsidian px-6 pb-8 pt-4 md:hidden">
+        <nav className="border-t border-white/10 bg-anchor px-6 pb-8 pt-4 md:hidden">
           <ul className="flex flex-col gap-5">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
@@ -107,7 +107,7 @@ export default function Header() {
           <a
             href="#newsletter"
             onClick={() => setOpen(false)}
-            className="mt-6 block rounded-full border border-orange/50 px-5 py-3 text-center font-mono text-xs tracking-[0.15em] text-orange transition-colors hover:bg-orange hover:text-obsidian"
+            className="mt-6 block rounded-full bg-accent px-5 py-3 text-center font-mono text-xs tracking-[0.15em] text-white transition-colors hover:bg-accent-hover"
           >
             SUBSCRIBE
           </a>
