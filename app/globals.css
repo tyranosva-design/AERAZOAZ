@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: "futura-pt", "Futura PT", "Syne", "Outfit", system-ui, -apple-system, sans-serif;
+    --font-body: "source-serif-4", "Source Serif 4", "Source Serif Pro", Georgia, serif;
+    
+    /* Category Exact Colors - strictly applied without gradients or altered shades */
+    --cat-reports: #0000FF;
+    --cat-guides: #00FF00;
+    --cat-tools: #FF00FF;
+    --cat-news: #FF6600;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #ffffff;
+    color: #000000;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: var(--font-heading);
+    letter-spacing: -0.015em;
+    font-weight: 700;
+  }
+}
+
+/* Custom Typography & Magazine Helpers */
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Category Accent Classes (Pure Hex, No Gradients, No Shades) */
+.cat-bg-reports { background-color: #0000FF !important; color: #ffffff !important; }
+.cat-text-reports { color: #0000FF !important; }
+.cat-border-reports { border-color: #0000FF !important; }
+
+.cat-bg-guides { background-color: #00FF00 !important; color: #000000 !important; }
+.cat-text-guides { color: #00FF00 !important; }
+.cat-border-guides { border-color: #00FF00 !important; }
+
+.cat-bg-tools { background-color: #FF00FF !important; color: #ffffff !important; }
+.cat-text-tools { color: #FF00FF !important; }
+.cat-border-tools { border-color: #FF00FF !important; }
+
+.cat-bg-news { background-color: #FF6600 !important; color: #ffffff !important; }
+.cat-text-news { color: #FF6600 !important; }
+.cat-border-news { border-color: #FF6600 !important; }
+
+/* Custom Scrollbar for Magazine Aesthetics */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #000000;
+}
+
+/* Table Styles - Ensure table headers are strictly black background with white text */
+table thead,
+table thead tr,
+table thead th,
+table th {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+}
+
+/* Ticker Animation */
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker 35s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}

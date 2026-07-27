@@ -1,0 +1,6 @@
+{
+  "name": "AERAZOAZ",
+  "description": "Research-backed digital intelligence platform for freelancers worldwide. Unbiased data, reports, guides, tools, and market news.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
