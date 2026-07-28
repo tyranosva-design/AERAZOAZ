@@ -132,7 +132,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({
             {onBackToStream ? (
               <button
                 onClick={onBackToStream}
-                className="inline-flex items-center space-x-2 bg-white text-black hover:bg-zinc-200 font-heading font-extrabold text-xs uppercase px-4 py-2 border border-black cursor-pointer transition-colors shadow-sm"
+                className="inline-flex items-center justify-center space-x-2 bg-white text-black hover:bg-zinc-200 font-heading font-extrabold text-xs uppercase px-4 py-2 border border-black cursor-pointer transition-colors shadow-sm min-h-[44px]"
               >
                 <ArrowLeft className="w-4 h-4 shrink-0" />
                 <span>RETURN TO HOME STREAM</span>
@@ -140,7 +140,8 @@ export const SearchPage: React.FC<SearchPageProps> = ({
             ) : (
               <Link
                 href="/"
-                className="inline-flex items-center space-x-2 bg-white text-black hover:bg-zinc-200 font-heading font-extrabold text-xs uppercase px-4 py-2 border border-black cursor-pointer transition-colors shadow-sm"
+                prefetch={true}
+                className="inline-flex items-center justify-center space-x-2 bg-white text-black hover:bg-zinc-200 font-heading font-extrabold text-xs uppercase px-4 py-2 border border-black cursor-pointer transition-colors shadow-sm min-h-[44px]"
               >
                 <ArrowLeft className="w-4 h-4 shrink-0" />
                 <span>RETURN TO HOME STREAM</span>

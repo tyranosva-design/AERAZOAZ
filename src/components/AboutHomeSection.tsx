@@ -30,6 +30,7 @@ export const AboutHomeSection: React.FC<AboutHomeSectionProps> = () => {
 
           <Link
             href="/about"
+            prefetch={true}
             className="bg-white text-black hover:bg-zinc-200 font-mono font-extrabold text-xs sm:text-sm uppercase px-6 py-4 border-2 border-white transition-colors flex items-center justify-center space-x-2 shrink-0 cursor-pointer shadow-md min-h-[48px]"
           >
             <span>READ FULL DESK MANIFESTO</span>

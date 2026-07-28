@@ -210,7 +210,7 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 sec timeout for fast response
+    const timeoutId = setTimeout(() => controller.abort(), 1200); // 1.2 sec timeout for instant response
 
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -218,6 +218,8 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
+      // Next.js static revalidation tag & cache option
+      next: { revalidate: 3600 },
       signal: controller.signal,
       body: JSON.stringify({ query: GET_POSTS_QUERY })
     });
@@ -293,10 +295,15 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
     const errorMsg = err instanceof Error ? err.message : String(err);
     console.warn('WordPress GraphQL request failed or timed out. Attempting WordPress REST API fallback...', errorMsg);
 
+    // If we already have cached posts from a previous successful request, return them immediately
+    if (cachedResult) {
+      return cachedResult;
+    }
+
     try {
       // Fallback: Fetch directly from WordPress REST API (/wp-json/wp/v2/posts)
       const restEndpoint = 'https://cms.aerazoaz.com/wp-json/wp/v2/posts?per_page=100&_embed=1';
-      const restRes = await fetch(restEndpoint);
+      const restRes = await fetch(restEndpoint, { next: { revalidate: 3600 } });
       if (restRes.ok) {
         const restPosts = await restRes.json();
         if (Array.isArray(restPosts) && restPosts.length > 0) {

@@ -87,7 +87,8 @@ export const CategoryHighlightsSection: React.FC<CategoryHighlightsSectionProps>
                 {/* Direct Category Access Button */}
                 <Link
                   href={`/${category.toLowerCase()}`}
-                  className="w-full mt-4 sm:mt-5 py-3 px-3 sm:px-4 bg-black text-white hover:bg-zinc-800 font-heading font-extrabold text-xs uppercase tracking-wider flex items-center justify-between border-2 border-black transition-all cursor-pointer shadow-xs active:scale-[0.98] shrink-0"
+                  prefetch={true}
+                  className="w-full mt-4 sm:mt-5 py-3 px-3 sm:px-4 bg-black text-white hover:bg-zinc-800 font-heading font-extrabold text-xs uppercase tracking-wider flex items-center justify-between border-2 border-black transition-all cursor-pointer shadow-xs active:scale-[0.98] shrink-0 min-h-[44px]"
                   style={{
                     borderLeftWidth: '6px',
                     borderLeftColor: theme.colorHex,

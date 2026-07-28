@@ -25,11 +25,11 @@ export const WelcomeGlassSection: React.FC<WelcomeGlassSectionProps> = () => {
           </div>
 
           <div className="space-y-4 sm:space-y-5 max-w-4xl pt-2">
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold font-heading text-black tracking-tight uppercase leading-tight">
+            <h1 className="text-fluid-h1 font-extrabold font-heading text-black tracking-tight uppercase leading-tight">
               Digital wealth, decoded.
             </h1>
-            <p className="text-zinc-700 font-body text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl">
-              The freelance world moves fast, and most advice out there is either outdated or trying to sell you something. AERAZOAZ cuts through that — real rates, real platform fees, real tool comparisons, sourced and broken down so you can actually make sense of it. No fluff. No gatekeeping. Just what's true, made easy to understand.
+            <p className="text-fluid-body text-zinc-700 font-body leading-relaxed max-w-3xl">
+              The freelance economy evolves dynamically. AERAZOAZ Data Desk publishes peer-audited rate benchmarks, fee structures, platform analysis, and verified tool reviews to empower independent professionals worldwide.
             </p>
           </div>
 
@@ -39,7 +39,8 @@ export const WelcomeGlassSection: React.FC<WelcomeGlassSectionProps> = () => {
             {/* REPORTS BUTTON (#0000FF) */}
             <Link
               href="/reports"
-              className="group flex items-center justify-between p-4 bg-white hover:bg-black text-black hover:text-white border-2 border-black transition-all duration-200 text-left cursor-pointer active:scale-98 shadow-xs"
+              prefetch={true}
+              className="group flex items-center justify-between p-4 bg-white hover:bg-black text-black hover:text-white border-2 border-black transition-all duration-200 text-left cursor-pointer active:scale-98 shadow-xs min-h-[64px]"
             >
               <div className="flex items-center space-x-3">
                 <div 
@@ -63,7 +64,8 @@ export const WelcomeGlassSection: React.FC<WelcomeGlassSectionProps> = () => {
             {/* GUIDES BUTTON (#00FF00) */}
             <Link
               href="/guides"
-              className="group flex items-center justify-between p-4 bg-white hover:bg-black text-black hover:text-white border-2 border-black transition-all duration-200 text-left cursor-pointer active:scale-98 shadow-xs"
+              prefetch={true}
+              className="group flex items-center justify-between p-4 bg-white hover:bg-black text-black hover:text-white border-2 border-black transition-all duration-200 text-left cursor-pointer active:scale-98 shadow-xs min-h-[64px]"
             >
               <div className="flex items-center space-x-3">
                 <div 
@@ -87,7 +89,8 @@ export const WelcomeGlassSection: React.FC<WelcomeGlassSectionProps> = () => {
             {/* TOOLS BUTTON (#FF00FF) */}
             <Link
               href="/tools"
-              className="group flex items-center justify-between p-4 bg-white hover:bg-black text-black hover:text-white border-2 border-black transition-all duration-200 text-left cursor-pointer active:scale-98 shadow-xs"
+              prefetch={true}
+              className="group flex items-center justify-between p-4 bg-white hover:bg-black text-black hover:text-white border-2 border-black transition-all duration-200 text-left cursor-pointer active:scale-98 shadow-xs min-h-[64px]"
             >
               <div className="flex items-center space-x-3">
                 <div 
@@ -111,7 +114,8 @@ export const WelcomeGlassSection: React.FC<WelcomeGlassSectionProps> = () => {
             {/* NEWS BUTTON (#FF6600) */}
             <Link
               href="/news"
-              className="group flex items-center justify-between p-4 bg-white hover:bg-black text-black hover:text-white border-2 border-black transition-all duration-200 text-left cursor-pointer active:scale-98 shadow-xs"
+              prefetch={true}
+              className="group flex items-center justify-between p-4 bg-white hover:bg-black text-black hover:text-white border-2 border-black transition-all duration-200 text-left cursor-pointer active:scale-98 shadow-xs min-h-[64px]"
             >
               <div className="flex items-center space-x-3">
                 <div 

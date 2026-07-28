@@ -12,16 +12,21 @@ import { SitemapRobotsModal } from './components/SitemapRobotsModal';
 import { GraphQLConsoleModal } from './components/GraphQLConsoleModal';
 import { Footer } from './components/Footer';
 
-export default function App() {
-  const [posts, setPosts] = useState<Post[]>(SAMPLE_POSTS);
-  const [gqlConfig, setGqlConfig] = useState<WordPressGraphQLConfig>(getGraphQLConfig());
-  const [, setLoadingPosts] = useState<boolean>(true);
+interface AppProps {
+  initialPosts?: Post[];
+  initialGqlConfig?: WordPressGraphQLConfig;
+}
+
+export default function App({ initialPosts, initialGqlConfig }: AppProps = {}) {
+  const [posts, setPosts] = useState<Post[]>(initialPosts && initialPosts.length > 0 ? initialPosts : SAMPLE_POSTS);
+  const [gqlConfig, setGqlConfig] = useState<WordPressGraphQLConfig>(initialGqlConfig || getGraphQLConfig());
+  const [, setLoadingPosts] = useState<boolean>(!initialPosts);
 
   // Modal States
   const [sitemapModalOpen, setSitemapModalOpen] = useState(false);
   const [gqlModalOpen, setGqlModalOpen] = useState(false);
 
-  // Fetch from WP GraphQL on Mount
+  // Fetch from WP GraphQL on Mount if initial posts were not provided
   const loadPostsFromGql = async (endpoint?: string) => {
     setLoadingPosts(true);
     const result = await fetchPostsFromGraphQL(endpoint);
@@ -31,8 +36,10 @@ export default function App() {
   };
 
   useEffect(() => {
-    loadPostsFromGql();
-  }, []);
+    if (!initialPosts || initialPosts.length === 0) {
+      loadPostsFromGql();
+    }
+  }, [initialPosts]);
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col font-body selection:bg-black selection:text-white">

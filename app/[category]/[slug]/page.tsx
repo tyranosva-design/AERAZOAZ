@@ -5,6 +5,8 @@ import { Header } from '@/src/components/Header';
 import { Footer } from '@/src/components/Footer';
 import { SinglePostView } from './SinglePostView';
 
+export const revalidate = 3600;
+
 interface SinglePostPageProps {
   params: Promise<{ category: string; slug: string }>;
 }

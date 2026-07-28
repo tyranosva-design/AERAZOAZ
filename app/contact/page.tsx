@@ -19,7 +19,8 @@ export default function ContactPage() {
           <div className="flex items-center justify-between border-b border-zinc-200 pb-4 mb-8 font-mono text-xs">
             <Link
               href="/"
-              className="inline-flex items-center space-x-2 text-black hover:bg-black hover:text-white px-3.5 py-1.5 border border-black font-extrabold transition-colors cursor-pointer"
+              prefetch={true}
+              className="inline-flex items-center justify-center space-x-2 text-black hover:bg-black hover:text-white px-4 py-2 border border-black font-extrabold transition-colors cursor-pointer min-h-[44px]"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>RETURN TO HOME STREAM</span>
@@ -36,10 +37,10 @@ export default function ContactPage() {
             <div className="inline-block bg-black text-white font-mono text-[11px] font-bold uppercase px-3 py-1 tracking-widest mb-3">
               AERAZOAZ COMMUNICATIONS
             </div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold font-heading text-black uppercase tracking-tight mb-3">
+            <h1 className="text-fluid-h1 font-extrabold font-heading text-black uppercase tracking-tight mb-3">
               CONTACT EDITORIAL DESK
             </h1>
-            <p className="text-base sm:text-lg font-body text-zinc-700 max-w-2xl leading-relaxed">
+            <p className="text-fluid-body font-body text-zinc-700 max-w-2xl leading-relaxed">
               For research inquiries, press dispatches, data feedback, or empirical corrections, contact our desk directly via email.
             </p>
           </div>
@@ -114,10 +115,10 @@ export default function ContactPage() {
                   <span>QUICK EXPLORE</span>
                 </div>
                 <div className="pt-1 flex flex-col space-y-2 font-mono text-xs font-bold uppercase">
-                  <Link href="/reports" className="hover:underline text-black">→ REPORTS STREAM</Link>
-                  <Link href="/guides" className="hover:underline text-black">→ PRACTICAL GUIDES</Link>
-                  <Link href="/tools" className="hover:underline text-black">→ FREELANCE TOOLS</Link>
-                  <Link href="/news" className="hover:underline text-black">→ POLICY & LEGISLATION</Link>
+                  <Link href="/reports" prefetch={true} className="hover:underline text-black py-1">→ REPORTS STREAM</Link>
+                  <Link href="/guides" prefetch={true} className="hover:underline text-black py-1">→ PRACTICAL GUIDES</Link>
+                  <Link href="/tools" prefetch={true} className="hover:underline text-black py-1">→ FREELANCE TOOLS</Link>
+                  <Link href="/news" prefetch={true} className="hover:underline text-black py-1">→ POLICY & LEGISLATION</Link>
                 </div>
               </div>
             </div>

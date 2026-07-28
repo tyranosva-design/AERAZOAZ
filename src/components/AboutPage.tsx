@@ -28,7 +28,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           {onBackToStream ? (
             <button
               onClick={onBackToStream}
-              className="flex items-center space-x-2 text-black hover:bg-black hover:text-white px-3 py-1.5 border border-black font-extrabold transition-colors cursor-pointer min-h-[38px]"
+              className="flex items-center justify-center space-x-2 text-black hover:bg-black hover:text-white px-4 py-2 border border-black font-extrabold transition-colors cursor-pointer min-h-[44px]"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>BACK TO INTELLIGENCE STREAM</span>
@@ -36,7 +36,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           ) : (
             <Link
               href="/"
-              className="flex items-center space-x-2 text-black hover:bg-black hover:text-white px-3 py-1.5 border border-black font-extrabold transition-colors cursor-pointer min-h-[38px]"
+              prefetch={true}
+              className="flex items-center justify-center space-x-2 text-black hover:bg-black hover:text-white px-4 py-2 border border-black font-extrabold transition-colors cursor-pointer min-h-[44px]"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>BACK TO INTELLIGENCE STREAM</span>
@@ -59,7 +60,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <span>EMPIRICAL RESEARCH MANIFESTO</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight uppercase leading-tight">
+          <h1 className="text-fluid-h1 font-bold font-heading tracking-tight uppercase leading-tight">
             NO GURUS. NO GIMMICKS.<br />
             <span className="text-zinc-400">PURE FREELANCE DATA.</span>
           </h1>

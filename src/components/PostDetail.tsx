@@ -71,6 +71,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({
         ) : (
           <Link
             href={`/${categorySlug}`}
+            prefetch={true}
             className="flex items-center justify-center space-x-2 text-white font-heading font-extrabold text-xs uppercase tracking-widest bg-black border border-black px-5 sm:px-6 py-3 sm:py-3.5 hover:bg-zinc-800 transition-colors cursor-pointer shadow-sm active:scale-98 min-h-[46px]"
           >
             <ArrowLeft className="w-4 h-4 shrink-0" />
@@ -94,7 +95,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({
       <div className="flex flex-wrap items-center gap-3 mb-6 sm:mb-8 font-mono text-xs">
         <Link 
           href={`/${categorySlug}`}
-          className="font-heading font-extrabold text-xs uppercase px-3.5 py-1.5 tracking-wider inline-block hover:opacity-90"
+          prefetch={true}
+          className="font-heading font-extrabold text-xs uppercase px-3.5 py-1.5 tracking-wider inline-block hover:opacity-90 min-h-[32px] flex items-center"
           style={{ 
             backgroundColor: theme.colorHex, 
             color: theme.colorHex === '#00FF00' ? '#000000' : '#ffffff' 
@@ -108,7 +110,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({
             <Link
               key={idx}
               href={`/search?tag=${encodeURIComponent(t.slug || t.name)}`}
-              className="border border-zinc-300 bg-zinc-50 hover:bg-black hover:text-white hover:border-black px-3 py-1 text-black font-semibold uppercase text-xs transition-colors"
+              prefetch={true}
+              className="border border-zinc-300 bg-zinc-50 hover:bg-black hover:text-white hover:border-black px-3 py-1 text-black font-semibold uppercase text-xs transition-colors min-h-[32px] flex items-center"
             >
               #{t.name}
             </Link>
@@ -116,7 +119,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({
         ) : post.tag ? (
           <Link
             href={`/search?tag=${encodeURIComponent(post.tag.toLowerCase().replace(/\s+/g, '-'))}`}
-            className="border border-zinc-300 bg-zinc-50 hover:bg-black hover:text-white hover:border-black px-3 py-1 text-black font-semibold uppercase text-xs transition-colors"
+            prefetch={true}
+            className="border border-zinc-300 bg-zinc-50 hover:bg-black hover:text-white hover:border-black px-3 py-1 text-black font-semibold uppercase text-xs transition-colors min-h-[32px] flex items-center"
           >
             #{post.tag}
           </Link>
@@ -127,7 +131,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({
       </div>
 
       {/* Main Title */}
-      <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-black tracking-tight leading-tight mb-6 sm:mb-8 uppercase break-words">
+      <h1 className="text-fluid-h1 font-bold font-heading text-black tracking-tight leading-tight mb-6 sm:mb-8 uppercase break-words">
         {post.title}
       </h1>
 
@@ -345,6 +349,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({
                 <Link 
                   key={relPost.id}
                   href={`/${relCategorySlug}/${relPost.slug}`}
+                  prefetch={true}
                   className="block bg-white border border-zinc-300 hover:border-black p-6 cursor-pointer transition-all shadow-sm hover:shadow-md"
                 >
                   <span 

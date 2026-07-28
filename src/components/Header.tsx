@@ -59,6 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center space-x-3 shrink-0">
           <Link
             href="/"
+            prefetch={true}
             onClick={() => setMenuOpen(false)}
             className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight cursor-pointer hover:opacity-80 font-heading select-none uppercase text-black border-none bg-transparent p-0 text-left"
             title="Return to AERAZOAZ Home Page"
@@ -73,8 +74,9 @@ export const Header: React.FC<HeaderProps> = ({
           {/* SEPARATE SEARCH BUTTON */}
           <Link
             href={isSearchActive ? '/' : '/search'}
+            prefetch={true}
             onClick={() => setMenuOpen(false)}
-            className={`inline-flex items-center justify-center space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-heading font-extrabold uppercase tracking-wider border-2 border-black whitespace-nowrap transition-all cursor-pointer shadow-xs active:scale-95 min-h-[36px] sm:min-h-[40px] ${
+            className={`inline-flex items-center justify-center space-x-1.5 px-3 sm:px-4 py-2 text-[11px] sm:text-xs font-heading font-extrabold uppercase tracking-wider border-2 border-black whitespace-nowrap transition-all cursor-pointer shadow-xs active:scale-95 min-h-[44px] ${
               isSearchActive 
                 ? 'bg-zinc-900 text-white hover:bg-black' 
                 : 'bg-white text-black hover:bg-zinc-100'
@@ -98,7 +100,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* SEPARATE MENU BUTTON */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`inline-flex items-center justify-center space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-heading font-extrabold uppercase tracking-wider border-2 border-black whitespace-nowrap transition-all cursor-pointer shadow-xs active:scale-95 min-h-[36px] sm:min-h-[40px] ${
+            className={`inline-flex items-center justify-center space-x-1.5 px-3 sm:px-4 py-2 text-[11px] sm:text-xs font-heading font-extrabold uppercase tracking-wider border-2 border-black whitespace-nowrap transition-all cursor-pointer shadow-xs active:scale-95 min-h-[44px] ${
               menuOpen 
                 ? 'bg-black text-white' 
                 : 'bg-black text-white hover:bg-zinc-800'
@@ -134,7 +136,7 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="text-zinc-400 hover:text-white text-xs font-mono underline cursor-pointer"
+                className="text-zinc-400 hover:text-white text-xs font-mono underline cursor-pointer py-1"
               >
                 CLOSE MENU
               </button>
@@ -149,14 +151,15 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                 <Link
                   href="/"
+                  prefetch={true}
                   onClick={handleCategoryClick}
-                  className={`p-4 border text-left font-mono text-xs uppercase font-extrabold cursor-pointer transition-all block ${
+                  className={`p-4 border text-left font-mono text-xs uppercase font-extrabold cursor-pointer transition-all block min-h-[48px] flex items-center justify-between ${
                     selectedCategory === 'All' && activeView === 'stream'
                       ? 'bg-white text-black border-white shadow-sm'
                       : 'bg-zinc-800 text-zinc-200 border-zinc-700 hover:border-white hover:text-white'
                   }`}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between w-full">
                     <span>ALL STREAMS</span>
                     <span className="text-[10px] opacity-70">MAIN</span>
                   </div>
@@ -170,14 +173,15 @@ export const Header: React.FC<HeaderProps> = ({
                     <Link
                       key={catKey}
                       href={`/${catKey.toLowerCase()}`}
+                      prefetch={true}
                       onClick={handleCategoryClick}
-                      className={`p-4 border text-left font-mono text-xs uppercase font-extrabold cursor-pointer transition-all block ${
+                      className={`p-4 border text-left font-mono text-xs uppercase font-extrabold cursor-pointer transition-all block min-h-[48px] flex items-center justify-between ${
                         isSelected
                           ? 'bg-white text-black border-white shadow-sm'
                           : 'bg-zinc-800 text-zinc-200 border-zinc-700 hover:border-white hover:text-white'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between w-full">
                         <div className="flex items-center space-x-2">
                           <span 
                             className="w-2.5 h-2.5 inline-block shrink-0 border border-white/20"
@@ -202,8 +206,9 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <Link
                   href="/about"
+                  prefetch={true}
                   onClick={() => setMenuOpen(false)}
-                  className="p-3.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-white text-left font-mono text-xs text-white uppercase font-bold flex items-center space-x-2 cursor-pointer transition-all block"
+                  className="p-3.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-white text-left font-mono text-xs text-white uppercase font-bold flex items-center space-x-2 cursor-pointer transition-all min-h-[48px]"
                 >
                   <FileText className="w-4 h-4 text-zinc-300 shrink-0 inline-block mr-2" />
                   <span>ABOUT AERAZOAZ DESK</span>
@@ -211,8 +216,9 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <Link
                   href="/policy"
+                  prefetch={true}
                   onClick={() => setMenuOpen(false)}
-                  className="p-3.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-white text-left font-mono text-xs text-white uppercase font-bold flex items-center space-x-2 cursor-pointer transition-all block"
+                  className="p-3.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-white text-left font-mono text-xs text-white uppercase font-bold flex items-center space-x-2 cursor-pointer transition-all min-h-[48px]"
                 >
                   <FileText className="w-4 h-4 text-zinc-300 shrink-0 inline-block mr-2" />
                   <span>POLICIES & GOVERNANCE</span>
@@ -220,8 +226,9 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <Link
                   href="/contact"
+                  prefetch={true}
                   onClick={() => setMenuOpen(false)}
-                  className="p-3.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-white text-left font-mono text-xs text-white uppercase font-bold flex items-center space-x-2 cursor-pointer transition-all block"
+                  className="p-3.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-white text-left font-mono text-xs text-white uppercase font-bold flex items-center space-x-2 cursor-pointer transition-all min-h-[48px]"
                 >
                   <Mail className="w-4 h-4 text-zinc-300 shrink-0 inline-block mr-2" />
                   <span>CONTACT DESK</span>
