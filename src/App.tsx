@@ -18,15 +18,16 @@ interface AppProps {
 }
 
 export default function App({ initialPosts, initialGqlConfig }: AppProps = {}) {
+  const isFallbackOrEmpty = !initialPosts || initialPosts.length === 0 || initialGqlConfig?.status === 'fallback' || initialPosts === SAMPLE_POSTS;
   const [posts, setPosts] = useState<Post[]>(initialPosts && initialPosts.length > 0 ? initialPosts : SAMPLE_POSTS);
   const [gqlConfig, setGqlConfig] = useState<WordPressGraphQLConfig>(initialGqlConfig || getGraphQLConfig());
-  const [, setLoadingPosts] = useState<boolean>(!initialPosts);
+  const [, setLoadingPosts] = useState<boolean>(isFallbackOrEmpty);
 
   // Modal States
   const [sitemapModalOpen, setSitemapModalOpen] = useState(false);
   const [gqlModalOpen, setGqlModalOpen] = useState(false);
 
-  // Fetch from WP GraphQL on Mount if initial posts were not provided
+  // Fetch from WP GraphQL on Mount
   const loadPostsFromGql = async (endpoint?: string) => {
     setLoadingPosts(true);
     const result = await fetchPostsFromGraphQL(endpoint);
@@ -36,10 +37,10 @@ export default function App({ initialPosts, initialGqlConfig }: AppProps = {}) {
   };
 
   useEffect(() => {
-    if (!initialPosts || initialPosts.length === 0) {
+    if (isFallbackOrEmpty) {
       loadPostsFromGql();
     }
-  }, [initialPosts]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col font-body selection:bg-black selection:text-white">

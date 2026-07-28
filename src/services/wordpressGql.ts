@@ -61,6 +61,26 @@ export function getGraphQLConfig(): WordPressGraphQLConfig {
   return currentConfig;
 }
 
+export function decodeHtmlEntities(text: string): string {
+  if (!text) return '';
+  return text
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&#8211;/g, '–')
+    .replace(/&#8212;/g, '—')
+    .replace(/&#8216;/g, "‘")
+    .replace(/&#8217;/g, "’")
+    .replace(/&#8220;/g, '“')
+    .replace(/&#8221;/g, '”')
+    .replace(/&#038;/g, '&')
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(Number(dec)))
+    .replace(/<[^>]+>/g, '')
+    .trim();
+}
+
 function parseWpCategory(
   categoryNodes: Array<{ name: string; slug: string }> | undefined,
   title: string = '',
@@ -134,6 +154,13 @@ function parseWpCategory(
         return 'Reports';
       }
     }
+
+    // If explicit category nodes exist but didn't match default keywords, use the first category name
+    const firstCat = categoryNodes[0];
+    if (firstCat && firstCat.name) {
+      const rawName = decodeHtmlEntities(firstCat.name);
+      return (rawName.charAt(0).toUpperCase() + rawName.slice(1)) as CategoryType;
+    }
   }
 
   // Fallback to inspecting Title
@@ -152,9 +179,7 @@ function parseWpCategory(
     return 'Reports';
   }
 
-  // Balanced fallback distribution across available categories
-  const categories: CategoryType[] = ['Reports', 'Guides', 'Tools', 'News'];
-  return categories[index % categories.length];
+  return 'Reports';
 }
 
 function parseWpTag(
@@ -164,7 +189,7 @@ function parseWpTag(
 ): string {
   // 1. Check explicit WP post tags first
   if (tagNodes && tagNodes.length > 0) {
-    const firstTag = tagNodes.map(t => t.name).find(Boolean);
+    const firstTag = tagNodes.map(t => decodeHtmlEntities(t.name)).find(Boolean);
     if (firstTag) {
       return firstTag.trim().toUpperCase();
     }
@@ -176,11 +201,10 @@ function parseWpTag(
       t => (t.taxonomyName === 'post_tag' || t.taxonomyName === 'tag' || t.taxonomyName === 'tags') && t.name
     );
     if (postTag && postTag.name) {
-      return postTag.name.trim().toUpperCase();
+      return decodeHtmlEntities(postTag.name).trim().toUpperCase();
     }
   }
 
-  // 3. If no tag exists in WordPress, return empty string
   return '';
 }
 
@@ -210,7 +234,8 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1200); // 1.2 sec timeout for instant response
+    // 10 second network timeout for reliable fetch from remote GraphQL
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -218,8 +243,7 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      // Next.js static revalidation tag & cache option
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
       signal: controller.signal,
       body: JSON.stringify({ query: GET_POSTS_QUERY })
     });
@@ -243,28 +267,30 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
 
     // Map WP GraphQL Nodes to AERAZOAZ Post Types
     const fetchedPosts: Post[] = nodes.map((node: any, idx: number) => {
-      const rawTitle = node.title?.replace(/<[^>]+>/g, '') || '';
-      const category = parseWpCategory(node.categories?.nodes, rawTitle, idx);
-      const primaryCatSlug = category.toLowerCase();
+      const cleanTitle = decodeHtmlEntities(node.title || '');
+      const category = parseWpCategory(node.categories?.nodes, cleanTitle, idx);
+      const customCategorySlug = node.categories?.nodes?.[0]?.slug || category.toLowerCase();
       const tag = parseWpTag(
         node.tags?.nodes,
         node.categories?.nodes,
         node.terms?.nodes
       );
       const tagsList = (node.tags?.nodes || []).map((t: any) => ({
-        name: t.name,
+        name: decodeHtmlEntities(t.name),
         slug: t.slug || t.name?.toLowerCase().replace(/\s+/g, '-') || 'tag'
       }));
+      
+      const cleanExcerpt = decodeHtmlEntities(node.excerpt || '');
       
       return {
         id: node.id || `wp-${node.databaseId || idx}`,
         databaseId: node.databaseId || idx,
-        title: node.title?.replace(/<[^>]+>/g, '') || 'Untitled Research Report',
+        title: cleanTitle || 'Untitled Research Report',
         slug: node.slug || `post-${idx}`,
-        excerpt: node.excerpt?.replace(/<[^>]+>/g, '').trim() || 'Research summary and empirical analysis.',
+        excerpt: cleanExcerpt || 'Research summary and empirical analysis.',
         content: node.content || '<p>Detailed empirical data compiled by AERAZOAZ Data Desk.</p>',
         category,
-        categorySlug: primaryCatSlug,
+        categorySlug: customCategorySlug,
         tag,
         tags: tagsList.length > 0 ? tagsList : (tag ? [{ name: tag, slug: tag.toLowerCase().replace(/\s+/g, '-') }] : []),
         date: parseWpDate(node.date),
@@ -272,7 +298,7 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
         author: node.author?.node?.name || 'AERAZOAZ Research Desk',
         methodology: 'Empirical research compiled from verified client-contractor datasets and public disclosures.',
         datasetInfo: `WP Stream ID: ${node.databaseId || idx}`,
-        featuredImage: node.featuredImage?.node?.sourceUrl,
+        featuredImage: node.featuredImage?.node?.sourceUrl || undefined,
         viewsCount: 1200 + (idx * 340),
         keyDataPoints: [
           { label: 'Research Status', value: 'Peer Audited', neutralOrGood: 'neutral' }
@@ -293,35 +319,35 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
 
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);
-    console.warn('WordPress GraphQL request failed or timed out. Attempting WordPress REST API fallback...', errorMsg);
+    console.warn('WordPress GraphQL request failed. Attempting WordPress REST API fallback...', errorMsg);
 
     // If we already have cached posts from a previous successful request, return them immediately
-    if (cachedResult) {
+    if (cachedResult && cachedResult.posts !== SAMPLE_POSTS) {
       return cachedResult;
     }
 
     try {
       // Fallback: Fetch directly from WordPress REST API (/wp-json/wp/v2/posts)
       const restEndpoint = 'https://cms.aerazoaz.com/wp-json/wp/v2/posts?per_page=100&_embed=1';
-      const restRes = await fetch(restEndpoint, { next: { revalidate: 3600 } });
+      const restRes = await fetch(restEndpoint, { next: { revalidate: 60 } });
       if (restRes.ok) {
         const restPosts = await restRes.json();
         if (Array.isArray(restPosts) && restPosts.length > 0) {
           const mappedRestPosts: Post[] = restPosts.map((item: any, idx: number) => {
-            const rawTitle = item.title?.rendered?.replace(/<[^>]+>/g, '') || '';
-            const rawExcerpt = item.excerpt?.rendered?.replace(/<[^>]+>/g, '').trim() || '';
+            const cleanTitle = decodeHtmlEntities(item.title?.rendered || '');
+            const cleanExcerpt = decodeHtmlEntities(item.excerpt?.rendered || '');
             const embeddedTerms = item._embedded?.['wp:term'] || [];
             const categoryNodes = (embeddedTerms[0] || []).map((t: any) => ({ name: t.name, slug: t.slug }));
             const tagNodes = (embeddedTerms[1] || []).map((t: any) => ({ name: t.name, slug: t.slug }));
-            const category = parseWpCategory(categoryNodes, rawTitle, idx);
-            const primaryCatSlug = category.toLowerCase();
+            const category = parseWpCategory(categoryNodes, cleanTitle, idx);
+            const customCategorySlug = categoryNodes[0]?.slug || category.toLowerCase();
             const tag = parseWpTag(
               tagNodes,
               categoryNodes,
               undefined
             );
             const tagsList = tagNodes.map((t: any) => ({
-              name: t.name,
+              name: decodeHtmlEntities(t.name),
               slug: t.slug || t.name?.toLowerCase().replace(/\s+/g, '-') || 'tag'
             }));
             const featuredImage = item._embedded?.['wp:featuredmedia']?.[0]?.source_url;
@@ -329,20 +355,20 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
             return {
               id: `wp-rest-${item.id || idx}`,
               databaseId: item.id || idx,
-              title: rawTitle || 'Untitled Research Report',
+              title: cleanTitle || 'Untitled Research Report',
               slug: item.slug || `post-${idx}`,
-              excerpt: rawExcerpt || 'Research summary and empirical analysis.',
+              excerpt: cleanExcerpt || 'Research summary and empirical analysis.',
               content: item.content?.rendered || '<p>Detailed empirical data compiled by AERAZOAZ Data Desk.</p>',
               category,
-              categorySlug: primaryCatSlug,
+              categorySlug: customCategorySlug,
               tag,
               tags: tagsList.length > 0 ? tagsList : (tag ? [{ name: tag, slug: tag.toLowerCase().replace(/\s+/g, '-') }] : []),
               date: parseWpDate(item.date),
               readTime: '6 min read',
-              author: 'AERAZOAZ Research Desk',
+              author: item._embedded?.author?.[0]?.name || 'AERAZOAZ Research Desk',
               methodology: 'Empirical research compiled from verified client-contractor datasets and public disclosures.',
               datasetInfo: `WP REST Stream ID: ${item.id || idx}`,
-              featuredImage,
+              featuredImage: featuredImage || undefined,
               viewsCount: 1400 + (idx * 210),
               keyDataPoints: [
                 { label: 'Research Status', value: 'Peer Audited', neutralOrGood: 'neutral' }
@@ -370,7 +396,7 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
       endpoint,
       status: 'fallback',
       lastQueryTime: new Date().toLocaleTimeString(),
-      errorMessage: errorMsg || 'Unable to reach WordPress endpoints. Showing cached research dataset.'
+      errorMessage: errorMsg || 'Unable to reach WordPress endpoints. Showing fallback dataset.'
     };
 
     cachedResult = { posts: SAMPLE_POSTS, config: currentConfig };
@@ -397,19 +423,19 @@ export async function getPostsByCategory(categorySlug: string): Promise<Post[]> 
 
 export async function getPostBySlug(categorySlug: string, postSlug: string): Promise<Post | null> {
   const posts = await getAllPosts();
-  const lowerCat = categorySlug.toLowerCase();
-  const lowerPost = postSlug.toLowerCase();
+  const lowerCat = (categorySlug || '').toLowerCase().trim();
+  const lowerPost = (postSlug || '').toLowerCase().trim();
   
   // 1. Exact match on slug and category
   let matched = posts.find(p => {
-    const slugMatch = p.slug.toLowerCase() === lowerPost;
+    const slugMatch = p.slug.toLowerCase() === lowerPost || String(p.databaseId) === lowerPost || p.id === lowerPost;
     const catMatch = (p.categorySlug && p.categorySlug.toLowerCase() === lowerCat) || p.category.toLowerCase() === lowerCat;
     return slugMatch && catMatch;
   });
 
   // 2. Fallback to slug match if category slug differed in query
   if (!matched) {
-    matched = posts.find(p => p.slug.toLowerCase() === lowerPost);
+    matched = posts.find(p => p.slug.toLowerCase() === lowerPost || String(p.databaseId) === lowerPost || p.id === lowerPost);
   }
 
   return matched || null;

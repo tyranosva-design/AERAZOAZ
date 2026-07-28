@@ -40,10 +40,14 @@ export const CategoryHighlightsSection: React.FC<CategoryHighlightsSectionProps>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           {CATEGORIES.map((category) => {
             const theme = CATEGORY_THEMES[category];
-            const categoryPosts = posts.filter((p) => p.category === category);
-            // First attempt to get latest post from current posts list, otherwise fallback to SAMPLE_POSTS
-            const latestPost = categoryPosts[0] || SAMPLE_POSTS.find((p) => p.category === category);
-            const count = Math.max(categoryPosts.length, latestPost ? 1 : 0);
+            const categoryPosts = posts.filter(
+              (p) => p.category === category || (p.categorySlug && p.categorySlug.toLowerCase() === category.toLowerCase())
+            );
+            
+            // Use latest real post in category, or fallback to sample post only if total dataset is sample data
+            const isUsingSampleData = posts === SAMPLE_POSTS;
+            const latestPost = categoryPosts[0] || (isUsingSampleData ? SAMPLE_POSTS.find((p) => p.category === category) : undefined);
+            const count = categoryPosts.length;
 
             return (
               <div 
@@ -78,8 +82,9 @@ export const CategoryHighlightsSection: React.FC<CategoryHighlightsSectionProps>
                       />
                     </div>
                   ) : (
-                    <div className="flex-1 p-8 text-center border border-zinc-200 bg-zinc-50 font-mono text-xs text-zinc-500 flex items-center justify-center min-h-[250px]">
-                      No posts available in this stream.
+                    <div className="flex-1 p-8 text-center border-2 border-dashed border-zinc-300 bg-zinc-50 font-mono text-xs text-zinc-500 flex flex-col items-center justify-center min-h-[220px]">
+                      <p className="font-bold text-zinc-700 uppercase mb-1">NO REPORTS IN {category.toUpperCase()}</p>
+                      <p className="text-[11px] text-zinc-500">Live WordPress data stream active. New research will appear here once published.</p>
                     </div>
                   )}
                 </div>

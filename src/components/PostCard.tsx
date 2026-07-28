@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Post, CATEGORY_THEMES } from '../types';
+import { decodeHtmlEntities } from '../services/wordpressGql';
 import { Calendar, ArrowUpRight, Tag } from 'lucide-react';
 
 interface PostCardProps {
@@ -21,20 +22,20 @@ export const PostCard: React.FC<PostCardProps> = ({
   // Tag name fetched directly from WordPress (if present)
   const hasTag = Boolean(post.tag && post.tag.trim());
   const displayTag = React.useMemo(() => {
-    return hasTag ? post.tag.trim().toUpperCase() : '';
+    return hasTag ? decodeHtmlEntities(post.tag).trim().toUpperCase() : '';
   }, [post.tag, hasTag]);
 
   // Truncate title strictly to max 65 chars
   const formattedTitle = React.useMemo(() => {
     if (!post.title) return '';
-    const clean = post.title.replace(/<[^>]+>/g, '').trim();
+    const clean = decodeHtmlEntities(post.title);
     return clean.length > 65 ? `${clean.slice(0, 65).trim()}…` : clean;
   }, [post.title]);
 
   // Truncate excerpt/description strictly to max 250 chars
   const formattedExcerpt = React.useMemo(() => {
     if (!post.excerpt) return '';
-    const clean = post.excerpt.replace(/<[^>]+>/g, '').trim();
+    const clean = decodeHtmlEntities(post.excerpt);
     return clean.length > 250 ? `${clean.slice(0, 250).trim()}…` : clean;
   }, [post.excerpt]);
 
