@@ -15,8 +15,23 @@ export const PostCard: React.FC<PostCardProps> = ({
   post,
   onSelectPost
 }) => {
-  const theme = CATEGORY_THEMES[post.category] || CATEGORY_THEMES.Reports;
-  const categorySlug = (post.categorySlug || post.category.toLowerCase()).toLowerCase();
+  const theme = React.useMemo(() => {
+    const norm = (post.category || '').toLowerCase().trim();
+    if (norm === 'guides' || norm === 'guide') return CATEGORY_THEMES.Guides;
+    if (norm === 'tools' || norm === 'tool') return CATEGORY_THEMES.Tools;
+    if (norm === 'news') return CATEGORY_THEMES.News;
+    if (norm === 'reports' || norm === 'report') return CATEGORY_THEMES.Reports;
+    return CATEGORY_THEMES[post.category as keyof typeof CATEGORY_THEMES] || {
+      name: post.category,
+      colorHex: '#000000',
+      bgClass: 'bg-black text-white',
+      textClass: 'text-black',
+      borderClass: 'border-black',
+      description: ''
+    };
+  }, [post.category]);
+
+  const categorySlug = (post.categorySlug || post.category.toLowerCase()).toLowerCase().trim();
   const postUrl = `/${categorySlug}/${post.slug}`;
 
   // Tag name fetched directly from WordPress (if present)

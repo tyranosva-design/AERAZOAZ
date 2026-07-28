@@ -1,5 +1,4 @@
 import { Post, CategoryType, WordPressGraphQLConfig } from '../types';
-import { SAMPLE_POSTS } from '../data/samplePosts';
 
 export const WP_GRAPHQL_ENDPOINT = 'https://cms.aerazoaz.com/graphql';
 
@@ -55,7 +54,7 @@ let currentConfig: WordPressGraphQLConfig = {
 
 let cachedResult: { posts: Post[]; config: WordPressGraphQLConfig } | null = null;
 let lastCacheTime = 0;
-const CACHE_TTL_MS = 60 * 1000; // 60 seconds in-memory cache
+const CACHE_TTL_MS = 5 * 1000; // 5 seconds short cache for rapid repeat calls within single render
 
 export function getGraphQLConfig(): WordPressGraphQLConfig {
   return currentConfig;
@@ -81,113 +80,44 @@ export function decodeHtmlEntities(text: string): string {
     .trim();
 }
 
-function parseWpCategory(
-  categoryNodes: Array<{ name: string; slug: string }> | undefined,
-  title: string = '',
-  index: number = 0
-): CategoryType {
+function parseWpCategoryNode(
+  categoryNodes: Array<{ name: string; slug: string }> | undefined
+): { category: CategoryType; categorySlug: string } {
   if (categoryNodes && categoryNodes.length > 0) {
-    for (const cat of categoryNodes) {
-      const name = (cat.name || '').toLowerCase().trim();
-      const slug = (cat.slug || '').toLowerCase().trim();
-
-      // 1. Guides check
-      if (
-        name.includes('guide') || slug.includes('guide') ||
-        name.includes('tutorial') || slug.includes('tutorial') ||
-        name.includes('how-to') || slug.includes('how-to') || name.includes('howto') ||
-        name.includes('blueprint') || slug.includes('blueprint') ||
-        name.includes('strategy') || slug.includes('strategy') ||
-        name.includes('playbook') || slug.includes('playbook') ||
-        name.includes('tip') || slug.includes('tip') ||
-        name.includes('course') || slug.includes('course') ||
-        name.includes('billing') || slug.includes('billing') ||
-        name.includes('invoice') || slug.includes('invoice') ||
-        name.includes('case-study') || slug.includes('case-study') ||
-        name === 'guides' || name === 'guide'
-      ) {
-        return 'Guides';
-      }
-
-      // 2. Tools check
-      if (
-        name.includes('tool') || slug.includes('tool') ||
-        name.includes('software') || slug.includes('software') ||
-        name.includes('calculator') || slug.includes('calculator') ||
-        name.includes('tracker') || slug.includes('tracker') ||
-        name.includes('app') || slug.includes('app') ||
-        name.includes('plugin') || slug.includes('plugin') ||
-        name.includes('tech') || slug.includes('tech') ||
-        name.includes('saas') || slug.includes('saas') ||
-        name.includes('platform') || slug.includes('platform') ||
-        name.includes('utility') || slug.includes('utility') ||
-        name.includes('stack') || slug.includes('stack') ||
-        name === 'tools' || name === 'tool'
-      ) {
-        return 'Tools';
-      }
-
-      // 3. News check
-      if (
-        name.includes('news') || slug.includes('news') ||
-        name.includes('update') || slug.includes('update') ||
-        name.includes('press') || slug.includes('press') ||
-        name.includes('announcement') || slug.includes('announcement') ||
-        name.includes('trend') || slug.includes('trend') ||
-        name.includes('policy') || slug.includes('policy') ||
-        name === 'news'
-      ) {
-        return 'News';
-      }
-
-      // 4. Reports check
-      if (
-        name.includes('report') || slug.includes('report') ||
-        name.includes('analysis') || slug.includes('analysis') ||
-        name.includes('research') || slug.includes('research') ||
-        name.includes('survey') || slug.includes('survey') ||
-        name.includes('data') || slug.includes('data') ||
-        name.includes('statistic') || slug.includes('statistic') ||
-        name.includes('benchmark') || slug.includes('benchmark') ||
-        name === 'reports' || name === 'report'
-      ) {
-        return 'Reports';
-      }
-    }
-
-    // If explicit category nodes exist but didn't match default keywords, use the first category name
     const firstCat = categoryNodes[0];
-    if (firstCat && firstCat.name) {
-      const rawName = decodeHtmlEntities(firstCat.name);
-      return (rawName.charAt(0).toUpperCase() + rawName.slice(1)) as CategoryType;
+    const rawName = decodeHtmlEntities(firstCat.name || '').trim();
+    const rawSlug = (firstCat.slug || '').toLowerCase().trim();
+    const lowerName = rawName.toLowerCase();
+
+    // Map common case variations of the 4 standard categories
+    if (lowerName === 'guides' || lowerName === 'guide') {
+      return { category: 'Guides', categorySlug: 'guides' };
     }
+    if (lowerName === 'reports' || lowerName === 'report') {
+      return { category: 'Reports', categorySlug: 'reports' };
+    }
+    if (lowerName === 'tools' || lowerName === 'tool') {
+      return { category: 'Tools', categorySlug: 'tools' };
+    }
+    if (lowerName === 'news') {
+      return { category: 'News', categorySlug: 'news' };
+    }
+
+    // Preserve exact WP Category Name (capitalized first letter) and Slug
+    const formattedCategory = (rawName.charAt(0).toUpperCase() + rawName.slice(1)) as CategoryType;
+    return {
+      category: formattedCategory,
+      categorySlug: rawSlug || lowerName.replace(/\s+/g, '-')
+    };
   }
 
-  // Fallback to inspecting Title
-  const lowerTitle = (title || '').toLowerCase();
-  
-  if (lowerTitle.includes('tool') || lowerTitle.includes('calculator') || lowerTitle.includes('software') || lowerTitle.includes('tracker') || lowerTitle.includes('stack') || lowerTitle.includes('app')) {
-    return 'Tools';
-  }
-  if (lowerTitle.includes('guide') || lowerTitle.includes('tutorial') || lowerTitle.includes('how to') || lowerTitle.includes('how-to') || lowerTitle.includes('blueprint') || lowerTitle.includes('step') || lowerTitle.includes('playbook')) {
-    return 'Guides';
-  }
-  if (lowerTitle.includes('news') || lowerTitle.includes('update') || lowerTitle.includes('press') || lowerTitle.includes('announcement')) {
-    return 'News';
-  }
-  if (lowerTitle.includes('report') || lowerTitle.includes('research') || lowerTitle.includes('survey') || lowerTitle.includes('analysis')) {
-    return 'Reports';
-  }
-
-  return 'Reports';
+  return { category: 'Uncategorized' as CategoryType, categorySlug: 'uncategorized' };
 }
 
 function parseWpTag(
   tagNodes: Array<{ name: string; slug?: string }> | undefined,
-  categoryNodes: Array<{ name: string; slug?: string }> | undefined,
   termNodes: Array<{ name: string; slug?: string; taxonomyName?: string }> | undefined
 ): string {
-  // 1. Check explicit WP post tags first
   if (tagNodes && tagNodes.length > 0) {
     const firstTag = tagNodes.map(t => decodeHtmlEntities(t.name)).find(Boolean);
     if (firstTag) {
@@ -195,7 +125,6 @@ function parseWpTag(
     }
   }
 
-  // 2. Check terms array for post_tag taxonomy if available
   if (termNodes && termNodes.length > 0) {
     const postTag = termNodes.find(
       t => (t.taxonomyName === 'post_tag' || t.taxonomyName === 'tag' || t.taxonomyName === 'tags') && t.name
@@ -220,7 +149,7 @@ function parseWpDate(dateStr: string): string {
   }
 }
 
-export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forceRefresh = false): Promise<{ posts: Post[]; config: WordPressGraphQLConfig }> {
+export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forceRefresh = true): Promise<{ posts: Post[]; config: WordPressGraphQLConfig }> {
   if (!forceRefresh && cachedResult && (Date.now() - lastCacheTime < CACHE_TTL_MS)) {
     return cachedResult;
   }
@@ -234,7 +163,6 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
 
   try {
     const controller = new AbortController();
-    // 10 second network timeout for reliable fetch from remote GraphQL
     const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     const response = await fetch(endpoint, {
@@ -243,7 +171,7 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      next: { revalidate: 60 },
+      cache: 'no-store',
       signal: controller.signal,
       body: JSON.stringify({ query: GET_POSTS_QUERY })
     });
@@ -265,14 +193,12 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
       throw new Error('GraphQL response contained 0 posts or empty nodes');
     }
 
-    // Map WP GraphQL Nodes to AERAZOAZ Post Types
+    // Map WP GraphQL Nodes to Post Types
     const fetchedPosts: Post[] = nodes.map((node: any, idx: number) => {
       const cleanTitle = decodeHtmlEntities(node.title || '');
-      const category = parseWpCategory(node.categories?.nodes, cleanTitle, idx);
-      const customCategorySlug = node.categories?.nodes?.[0]?.slug || category.toLowerCase();
+      const { category, categorySlug } = parseWpCategoryNode(node.categories?.nodes);
       const tag = parseWpTag(
         node.tags?.nodes,
-        node.categories?.nodes,
         node.terms?.nodes
       );
       const tagsList = (node.tags?.nodes || []).map((t: any) => ({
@@ -290,7 +216,7 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
         excerpt: cleanExcerpt || 'Research summary and empirical analysis.',
         content: node.content || '<p>Detailed empirical data compiled by AERAZOAZ Data Desk.</p>',
         category,
-        categorySlug: customCategorySlug,
+        categorySlug,
         tag,
         tags: tagsList.length > 0 ? tagsList : (tag ? [{ name: tag, slug: tag.toLowerCase().replace(/\s+/g, '-') }] : []),
         date: parseWpDate(node.date),
@@ -321,15 +247,10 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
     const errorMsg = err instanceof Error ? err.message : String(err);
     console.warn('WordPress GraphQL request failed. Attempting WordPress REST API fallback...', errorMsg);
 
-    // If we already have cached posts from a previous successful request, return them immediately
-    if (cachedResult && cachedResult.posts !== SAMPLE_POSTS) {
-      return cachedResult;
-    }
-
     try {
       // Fallback: Fetch directly from WordPress REST API (/wp-json/wp/v2/posts)
       const restEndpoint = 'https://cms.aerazoaz.com/wp-json/wp/v2/posts?per_page=100&_embed=1';
-      const restRes = await fetch(restEndpoint, { next: { revalidate: 60 } });
+      const restRes = await fetch(restEndpoint, { cache: 'no-store' });
       if (restRes.ok) {
         const restPosts = await restRes.json();
         if (Array.isArray(restPosts) && restPosts.length > 0) {
@@ -339,11 +260,9 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
             const embeddedTerms = item._embedded?.['wp:term'] || [];
             const categoryNodes = (embeddedTerms[0] || []).map((t: any) => ({ name: t.name, slug: t.slug }));
             const tagNodes = (embeddedTerms[1] || []).map((t: any) => ({ name: t.name, slug: t.slug }));
-            const category = parseWpCategory(categoryNodes, cleanTitle, idx);
-            const customCategorySlug = categoryNodes[0]?.slug || category.toLowerCase();
+            const { category, categorySlug } = parseWpCategoryNode(categoryNodes);
             const tag = parseWpTag(
               tagNodes,
-              categoryNodes,
               undefined
             );
             const tagsList = tagNodes.map((t: any) => ({
@@ -360,7 +279,7 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
               excerpt: cleanExcerpt || 'Research summary and empirical analysis.',
               content: item.content?.rendered || '<p>Detailed empirical data compiled by AERAZOAZ Data Desk.</p>',
               category,
-              categorySlug: customCategorySlug,
+              categorySlug,
               tag,
               tags: tagsList.length > 0 ? tagsList : (tag ? [{ name: tag, slug: tag.toLowerCase().replace(/\s+/g, '-') }] : []),
               date: parseWpDate(item.date),
@@ -396,27 +315,28 @@ export async function fetchPostsFromGraphQL(endpoint = WP_GRAPHQL_ENDPOINT, forc
       endpoint,
       status: 'fallback',
       lastQueryTime: new Date().toLocaleTimeString(),
-      errorMessage: errorMsg || 'Unable to reach WordPress endpoints. Showing fallback dataset.'
+      errorMessage: errorMsg || 'Unable to reach WordPress endpoints.'
     };
 
-    cachedResult = { posts: SAMPLE_POSTS, config: currentConfig };
+    // Return empty posts array on failure - NO sample posts injection
+    cachedResult = { posts: [], config: currentConfig };
     lastCacheTime = Date.now();
     return cachedResult;
   }
 }
 
 export async function getAllPosts(): Promise<Post[]> {
-  const result = await fetchPostsFromGraphQL();
+  const result = await fetchPostsFromGraphQL(WP_GRAPHQL_ENDPOINT, true);
   return result.posts;
 }
 
 export async function getPostsByCategory(categorySlug: string): Promise<Post[]> {
   const posts = await getAllPosts();
-  const lowerCat = categorySlug.toLowerCase();
+  const lowerCat = categorySlug.toLowerCase().trim();
   return posts.filter(post => {
     return (
-      (post.categorySlug && post.categorySlug.toLowerCase() === lowerCat) ||
-      post.category.toLowerCase() === lowerCat
+      (post.categorySlug && post.categorySlug.toLowerCase().trim() === lowerCat) ||
+      post.category.toLowerCase().trim() === lowerCat
     );
   });
 }
@@ -458,4 +378,3 @@ export async function getAllPostParams(): Promise<Array<{ category: string; slug
     slug: p.slug
   }));
 }
-

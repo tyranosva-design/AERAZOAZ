@@ -28,8 +28,15 @@ export const PostDetail: React.FC<PostDetailProps> = ({
   relatedPosts,
   onSelectPost
 }) => {
-  const router = useRouter();
-  const theme = CATEGORY_THEMES[post.category] || CATEGORY_THEMES.Reports;
+  const theme = React.useMemo(() => {
+    const norm = (post.category || '').toLowerCase().trim();
+    if (norm === 'guides' || norm === 'guide') return CATEGORY_THEMES.Guides;
+    if (norm === 'tools' || norm === 'tool') return CATEGORY_THEMES.Tools;
+    if (norm === 'news') return CATEGORY_THEMES.News;
+    if (norm === 'reports' || norm === 'report') return CATEGORY_THEMES.Reports;
+    return CATEGORY_THEMES[post.category as keyof typeof CATEGORY_THEMES] || CATEGORY_THEMES.Reports;
+  }, [post.category]);
+  
   const [copied, setCopied] = useState(false);
   
   // Interactive Guide Checklist State

@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { Post, CategoryType, CATEGORY_THEMES } from '../types';
-import { SAMPLE_POSTS } from '../data/samplePosts';
 import { PostCard } from './PostCard';
 import { ArrowRight, Triangle, Layers } from 'lucide-react';
 
@@ -32,7 +31,7 @@ export const CategoryHighlightsSection: React.FC<CategoryHighlightsSectionProps>
             </h2>
           </div>
           <div className="font-mono text-xs text-zinc-600 bg-white border border-black p-3 shadow-xs shrink-0 max-w-fit">
-            <span className="font-bold text-black">1 LATEST ARTICLE</span> PER CATEGORY
+            <span className="font-bold text-black">{posts.length} LIVE ARTICLE{posts.length === 1 ? '' : 'S'}</span> FETCHED FROM WORDPRESS
           </div>
         </div>
 
@@ -41,12 +40,11 @@ export const CategoryHighlightsSection: React.FC<CategoryHighlightsSectionProps>
           {CATEGORIES.map((category) => {
             const theme = CATEGORY_THEMES[category];
             const categoryPosts = posts.filter(
-              (p) => p.category === category || (p.categorySlug && p.categorySlug.toLowerCase() === category.toLowerCase())
+              (p) => (p.category && p.category.toLowerCase().trim() === category.toLowerCase()) || 
+                     (p.categorySlug && p.categorySlug.toLowerCase().trim() === category.toLowerCase())
             );
             
-            // Use latest real post in category, or fallback to sample post only if total dataset is sample data
-            const isUsingSampleData = posts === SAMPLE_POSTS;
-            const latestPost = categoryPosts[0] || (isUsingSampleData ? SAMPLE_POSTS.find((p) => p.category === category) : undefined);
+            const latestPost = categoryPosts[0];
             const count = categoryPosts.length;
 
             return (
@@ -83,8 +81,8 @@ export const CategoryHighlightsSection: React.FC<CategoryHighlightsSectionProps>
                     </div>
                   ) : (
                     <div className="flex-1 p-8 text-center border-2 border-dashed border-zinc-300 bg-zinc-50 font-mono text-xs text-zinc-500 flex flex-col items-center justify-center min-h-[220px]">
-                      <p className="font-bold text-zinc-700 uppercase mb-1">NO REPORTS IN {category.toUpperCase()}</p>
-                      <p className="text-[11px] text-zinc-500">Live WordPress data stream active. New research will appear here once published.</p>
+                      <p className="font-bold text-zinc-700 uppercase mb-1">NO POSTS IN {category.toUpperCase()}</p>
+                      <p className="text-[11px] text-zinc-500">Only live WordPress posts are displayed. Publish a post under "{category}" in WordPress to see it here instantly.</p>
                     </div>
                   )}
                 </div>

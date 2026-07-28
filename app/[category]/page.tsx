@@ -7,7 +7,8 @@ import { PostCard } from '@/src/components/PostCard';
 import { CATEGORY_THEMES, CategoryType } from '@/src/types';
 import Link from 'next/link';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;

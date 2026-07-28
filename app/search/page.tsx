@@ -4,6 +4,9 @@ import { Footer } from '@/src/components/Footer';
 import { SearchPage as SearchContent } from '@/src/components/SearchPage';
 import { getAllPosts } from '@/src/services/wordpressGql';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'Search & Explore Intelligence Reports | AERAZOAZ',
   description: 'Search the full AERAZOAZ research ledger across categories, datasets, tags, and verified metrics.',

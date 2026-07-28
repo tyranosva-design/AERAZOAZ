@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Post, WordPressGraphQLConfig } from './types';
 import { fetchPostsFromGraphQL, getGraphQLConfig } from './services/wordpressGql';
-import { SAMPLE_POSTS } from './data/samplePosts';
 import { Header } from './components/Header';
 import { WelcomeGlassSection } from './components/WelcomeGlassSection';
 import { CategoryHighlightsSection } from './components/CategoryHighlightsSection';
@@ -18,29 +17,28 @@ interface AppProps {
 }
 
 export default function App({ initialPosts, initialGqlConfig }: AppProps = {}) {
-  const isFallbackOrEmpty = !initialPosts || initialPosts.length === 0 || initialGqlConfig?.status === 'fallback' || initialPosts === SAMPLE_POSTS;
-  const [posts, setPosts] = useState<Post[]>(initialPosts && initialPosts.length > 0 ? initialPosts : SAMPLE_POSTS);
+  const [posts, setPosts] = useState<Post[]>(initialPosts || []);
   const [gqlConfig, setGqlConfig] = useState<WordPressGraphQLConfig>(initialGqlConfig || getGraphQLConfig());
-  const [, setLoadingPosts] = useState<boolean>(isFallbackOrEmpty);
+  const [, setLoadingPosts] = useState<boolean>(!initialPosts);
 
   // Modal States
   const [sitemapModalOpen, setSitemapModalOpen] = useState(false);
   const [gqlModalOpen, setGqlModalOpen] = useState(false);
 
-  // Fetch from WP GraphQL on Mount
+  // Fetch from WP GraphQL on Mount to ensure fresh live data
   const loadPostsFromGql = async (endpoint?: string) => {
     setLoadingPosts(true);
-    const result = await fetchPostsFromGraphQL(endpoint);
+    const result = await fetchPostsFromGraphQL(endpoint, true);
     setPosts(result.posts);
     setGqlConfig(result.config);
     setLoadingPosts(false);
   };
 
   useEffect(() => {
-    if (isFallbackOrEmpty) {
+    if (!initialPosts || initialPosts.length === 0) {
       loadPostsFromGql();
     }
-  }, []);
+  }, [initialPosts]);
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col font-body selection:bg-black selection:text-white">
