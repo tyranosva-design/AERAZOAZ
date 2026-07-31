@@ -12,17 +12,33 @@
     --cat-news: #FF6600;
 
     /* Fluid Sizing Tokens using clamp() & rem */
-    --fluid-h1: clamp(1.875rem, 4vw + 1rem, 3.75rem);
-    --fluid-h2: clamp(1.5rem, 2.5vw + 0.875rem, 2.5rem);
-    --fluid-h3: clamp(1.25rem, 1.8vw + 0.75rem, 1.75rem);
-    --fluid-body: clamp(0.9375rem, 0.5vw + 0.8125rem, 1.125rem);
-    --fluid-meta: clamp(0.6875rem, 0.3vw + 0.625rem, 0.8125rem);
+    /* H1: Desktop ranges from 32px (2rem) to 52px+ (3.25rem+), scaling down gracefully on mobile (~28px/1.75rem) */
+    --fluid-h1: clamp(1.75rem, 2.5vw + 1.25rem, 3.25rem);
+    
+    /* Subheadings (H2 & H3): Step down to range from 20px (1.25rem) to 34px (2.125rem) */
+    --fluid-h2: clamp(1.375rem, 1.5vw + 1rem, 2.125rem); /* ~22px to 34px */
+    --fluid-h3: clamp(1.25rem, 0.8vw + 1rem, 1.625rem);  /* 20px to 26px */
+
+    /* Body Text: Site-wide base size 16px (1rem) on mobile scaling to 17px (1.0625rem) on desktop */
+    --fluid-body: clamp(1rem, 0.25vw + 0.9375rem, 1.0625rem);
+
+    /* Dedicated Blog Post Body Text: Strictly 18px (1.125rem) */
+    --post-body: 1.125rem;
+
+    --fluid-meta: clamp(0.75rem, 0.3vw + 0.6875rem, 0.875rem);
     --fluid-py-section: clamp(2.5rem, 5vw + 1rem, 6rem);
     --fluid-px-card: clamp(1rem, 2vw + 0.5rem, 2rem);
   }
 
+  html {
+    font-size: 16px;
+  }
+
   body {
     font-family: var(--font-body);
+    font-size: var(--fluid-body);
+    line-height: 1.65;
+    letter-spacing: 0.005em;
     background-color: #ffffff;
     color: #000000;
     overflow-x: hidden;
@@ -31,36 +47,81 @@
     text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3, h4, h5, h6, .font-heading {
+  h1, .text-fluid-h1 {
     font-family: var(--font-heading);
+    font-size: var(--fluid-h1);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+
+  h2, .text-fluid-h2 {
+    font-family: var(--font-heading);
+    font-size: var(--fluid-h2);
+    line-height: 1.22;
     letter-spacing: -0.015em;
     font-weight: 700;
+  }
+
+  h3, .text-fluid-h3 {
+    font-family: var(--font-heading);
+    font-size: var(--fluid-h3);
+    line-height: 1.28;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
+
+  h4, h5, h6 {
+    font-family: var(--font-heading);
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    font-weight: 700;
+  }
+
+  p {
+    font-family: var(--font-body);
+    font-size: var(--fluid-body);
+    line-height: 1.65;
+    letter-spacing: 0.005em;
   }
 }
 
 /* Fluid Typography Utilities */
 .text-fluid-h1 {
   font-size: var(--fluid-h1);
-  line-height: 1.1;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .text-fluid-h2 {
   font-size: var(--fluid-h2);
-  line-height: 1.2;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
 }
 
 .text-fluid-h3 {
   font-size: var(--fluid-h3);
-  line-height: 1.3;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
 }
 
 .text-fluid-body {
   font-size: var(--fluid-body);
-  line-height: 1.6;
+  line-height: 1.65;
+  letter-spacing: 0.005em;
+}
+
+/* Blog Post Specific Body Text (Strictly 18px / 1.125rem for optimal article readability) */
+.text-post-body, .text-blog-body {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.68;
+  letter-spacing: 0.005em;
 }
 
 .text-fluid-meta {
   font-size: var(--fluid-meta);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
 }
 
 .py-fluid-section {

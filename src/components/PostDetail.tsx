@@ -158,10 +158,12 @@ export const PostDetail: React.FC<PostDetailProps> = ({
         </div>
       )}
 
-      {/* Excerpt Lead Paragraph */}
-      <p className="text-base sm:text-lg md:text-xl font-body text-zinc-800 leading-relaxed mb-8 sm:mb-12 border-l-4 border-black pl-4 sm:pl-6 italic bg-zinc-50 py-4 sm:py-5 pr-4 sm:pr-6">
-        "{post.excerpt}"
-      </p>
+      {/* Normal Introduction Paragraph (18px Body Text) */}
+      {post.excerpt && (
+        <p className="text-[18px] font-body text-zinc-800 leading-relaxed mb-6 sm:mb-10 font-normal">
+          {post.excerpt}
+        </p>
+      )}
 
       {/* Category-Specific Interactive Action Widget */}
       {post.category === 'Guides' && (
@@ -236,8 +238,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({
         </div>
       )}
 
-      {/* Main Content Body with Clean Editorial Markdown Typography & Responsive Tables */}
-      <div className="border-b border-zinc-200 pb-8 sm:pb-12 text-zinc-900 font-body leading-relaxed">
+      {/* Main Content Body with Clean Editorial Markdown Typography (18px Body Text) & Responsive Tables */}
+      <div className="border-b border-zinc-200 pb-8 sm:pb-12 text-zinc-900 font-body leading-relaxed text-[18px]">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
@@ -275,24 +277,24 @@ export const PostDetail: React.FC<PostDetailProps> = ({
                 {children}
               </td>
             ),
-            // Headings & Text Formatting
+            // Headings & Text Formatting (Blog post body strictly 18px)
             h1: ({ children }) => (
-              <h1 className="text-xl sm:text-3xl font-bold font-heading text-black uppercase tracking-tight mt-8 mb-4 border-b-2 border-black pb-2">
+              <h1 className="text-fluid-h1 font-bold font-heading text-black uppercase tracking-tight mt-8 mb-4 border-b-2 border-black pb-2">
                 {children}
               </h1>
             ),
             h2: ({ children }) => (
-              <h2 className="text-lg sm:text-2xl font-bold font-heading text-black uppercase tracking-tight mt-8 mb-3 border-b border-zinc-300 pb-1.5">
+              <h2 className="text-fluid-h2 font-bold font-heading text-black uppercase tracking-tight mt-8 mb-3 border-b border-zinc-300 pb-1.5">
                 {children}
               </h2>
             ),
             h3: ({ children }) => (
-              <h3 className="text-base sm:text-xl font-bold font-heading text-black uppercase tracking-tight mt-6 mb-2.5">
+              <h3 className="text-fluid-h3 font-bold font-heading text-black uppercase tracking-tight mt-6 mb-2.5">
                 {children}
               </h3>
             ),
             p: ({ children }) => (
-              <p className="font-body text-base sm:text-lg leading-relaxed text-zinc-800 mb-5 font-normal">
+              <p className="font-body text-[18px] leading-relaxed text-zinc-800 mb-6 font-normal">
                 {children}
               </p>
             ),
@@ -302,17 +304,17 @@ export const PostDetail: React.FC<PostDetailProps> = ({
               </a>
             ),
             ul: ({ children }) => (
-              <ul className="list-disc list-outside space-y-2.5 my-5 font-body text-base sm:text-lg text-zinc-800 pl-6">
+              <ul className="list-disc list-outside space-y-2.5 my-6 font-body text-[18px] text-zinc-800 pl-6">
                 {children}
               </ul>
             ),
             ol: ({ children }) => (
-              <ol className="list-decimal list-outside space-y-2.5 my-5 font-body text-base sm:text-lg text-zinc-800 pl-6">
+              <ol className="list-decimal list-outside space-y-2.5 my-6 font-body text-[18px] text-zinc-800 pl-6">
                 {children}
               </ol>
             ),
             li: ({ children }) => (
-              <li className="leading-relaxed pl-1">
+              <li className="leading-relaxed pl-1 text-[18px]">
                 {children}
               </li>
             ),
@@ -322,7 +324,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({
               </strong>
             ),
             blockquote: ({ children }) => (
-              <blockquote className="border-l-4 border-black bg-zinc-50 p-4 sm:p-5 my-6 italic text-zinc-800 font-body text-base sm:text-lg border-y border-r border-zinc-200">
+              <blockquote className="border-l-4 border-black bg-zinc-50 p-5 sm:p-6 my-6 font-body text-[18px] text-zinc-800 border-y border-r border-zinc-200">
                 {children}
               </blockquote>
             ),
